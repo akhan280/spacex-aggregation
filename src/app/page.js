@@ -1,50 +1,26 @@
-"use client"
-import React, { useEffect, useRef } from 'react';
+'use client'
+import React from 'react';
 import Head from 'next/head';
-import Globe from 'globe.gl';
+import CustomGlobe from './globe.js'
 
 export default function Home() {
-  const globeContainerRef = useRef(null);
-
-  useEffect(() => {
-    // Initialize the globe only if the container exists
-    if (globeContainerRef.current) {
-      const N = 10;
-      const gData = [...Array(N).keys()].map(() => ({
-        lat: (Math.random() - 0.5) * 180,
-        lng: (Math.random() - 0.5) * 360,
-        maxR: Math.random() * 20 + 3,
-        propagationSpeed: (Math.random() - 0.5) * 20 + 1,
-        repeatPeriod: Math.random() * 2000 + 200
-      }));
-
-      const colorInterpolator = t => `rgba(255,100,50,${Math.sqrt(1-t)})`;
-
-      const myGlobe = Globe()
-        .globeImageUrl('//unpkg.com/three-globe/example/img/earth-night.jpg')
-        .ringsData(gData)
-        .ringColor(() => colorInterpolator)
-        .ringMaxRadius('maxR')
-        .ringPropagationSpeed('propagationSpeed')
-        .ringRepeatPeriod('repeatPeriod');
-
-      myGlobe(globeContainerRef.current);
-
-
-      return () => {
-        if (globeContainerRef.current) {
-          globeContainerRef.current.innerHTML = '';
-        }
-      };
-    }
-  }, []);
-
   return (
-    <div>
-      <Head>
-        <style>{`body { margin: 0; }`}</style>
-      </Head>
-      <div ref={globeContainerRef} style={{ width: '100vw', height: '100vh' }} />
+    <div className='flex flex-row items-center justify-center h-screen bg-black'>
+      <div className="w-1/2 h-full flex items-center justify-cente">
+        <div className="relative w-full h-full rounded-full flex justify-center items-center">
+          <CustomGlobe />
+        </div>
+      </div>
+      <div className="absolute top-0 mt-6 text-zinc-100">
+        spacex visualizer
+      </div>
+      <div className="w-1/2 h-full flex items-center justify-center">
+        <div className="text-lg text-center p-8 border-2 border-dotted border-white text-zinc-100">
+          <h1>Welcome to Our Globe Visualization</h1>
+          <p>This interactive globe shows various dynamic features based on user data.</p>
+          <p>Explore the globe to learn more about the data points and their significance.</p>
+        </div>
+      </div>
     </div>
   );
 }

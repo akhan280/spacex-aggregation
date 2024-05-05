@@ -3,7 +3,7 @@ import Launchpad from '@/types/launchpad';
 import type { NextApiRequest, NextApiResponse } from 'next';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse<Launchpad | { message: string }>) {
-    const { id } = req.query; // Extract the 'id' parameter from the URL
+    const { id } = req.query; 
 
     if (req.method === 'GET') {
         try {
