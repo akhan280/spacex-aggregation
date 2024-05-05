@@ -1,10 +1,10 @@
 import create from 'zustand';
 
-export const useLaunchpadStore = create((set) => ({
-  launchpads: [],
+export const useLaunchStore = create((set, get) => ({
+  launches: [],
   loading: true,
   selectedLaunch: null,
-  setLaunchpads: (launchpads) => set({ launchpads }),
+  setLaunches: (launches) => set({ launches }),
   setLoading: (loading) => set({ loading }),
   setSelectedLaunch: (launch) => set({ selectedLaunch: launch }),
 }));

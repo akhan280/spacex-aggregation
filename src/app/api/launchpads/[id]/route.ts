@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import Launchpad from '@/types/launchpad';
+import Pad from '@/types/pad';
 
 type Params = {
  id: string;
@@ -15,7 +15,7 @@ export async function GET(request: Request, context: { params: Params }) {
      }
      throw new Error('Failed to fetch SpaceX launchpad data.');
    }
-   const data: Launchpad = await response.json();
+   const data: Pad = await response.json();
    return NextResponse.json(data);
  } catch (error: unknown) {
    if (error instanceof Error) {

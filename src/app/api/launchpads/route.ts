@@ -1,14 +1,18 @@
 import { NextResponse } from 'next/server';
-import Launchpad from '@/types/launchpad';
+import Pad from '@/types/pad';
 
 export async function GET(request: Request) {
  try {
-   const response = await fetch('https://api.spacexdata.com/v4/launchpads');
-   if (!response.ok) {
-     throw new Error('Failed to fetch SpaceX launchpads data.');
-   }
-   const data: Launchpad[] = await response.json();
-   return NextResponse.json(data);
+  const response = await fetch('https://api.spacexdata.com/v4/launchpads');
+  if (!response.ok) {
+    throw new Error('Failed to fetch SpaceX launchpads data.');
+  }
+  const data: Pad[] = await response.json();
+  const transformedData = data.map((item) => ({
+    ...item,
+    isLaunch: true,
+  }));
+  return NextResponse.json(transformedData);
  } catch (error: unknown) {
    if (error instanceof Error) {
      return NextResponse.json({ message: error.message }, { status: 500 });
