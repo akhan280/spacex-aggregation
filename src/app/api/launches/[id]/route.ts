@@ -1,13 +1,21 @@
-import Core from '@/types/cores';
 import { NextResponse } from 'next/server';
+import Launch from '@/types/launch';
 
-export async function GET(request: Request) {
+type Params = {
+  id: string;
+};
+
+export async function GET(request: Request, context: { params: Params }) {
+  const { id } = context.params;
   try {
-    const response = await fetch('https://api.spacexdata.com/v4/cores');
+    const response = await fetch(`https://api.spacexdata.com/v5/launches/${id}`);
     if (!response.ok) {
-      throw new Error('Failed to fetch SpaceX cores data.');
+      if (response.status === 404) {
+        return NextResponse.json({ message: 'Not Found' }, { status: 404 });
+      }
+      throw new Error('Failed to fetch the SpaceX data.');
     }
-    const data: Core[] = await response.json();
+    const data: Launch = await response.json();
     return NextResponse.json(data);
   } catch (error: unknown) {
     if (error instanceof Error) {

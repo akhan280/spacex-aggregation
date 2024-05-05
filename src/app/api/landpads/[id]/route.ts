@@ -1,13 +1,21 @@
-import Core from '@/types/cores';
 import { NextResponse } from 'next/server';
+import LandingPad from '@/types/landpad';
 
-export async function GET(request: Request) {
+type Params = {
+  id: string;
+};
+
+export async function GET(request: Request, context: { params: Params }) {
+  const { id } = context.params;
   try {
-    const response = await fetch('https://api.spacexdata.com/v4/cores');
+    const response = await fetch(`https://api.spacexdata.com/v4/landpads/${id}`);
     if (!response.ok) {
-      throw new Error('Failed to fetch SpaceX cores data.');
+      if (response.status === 404) {
+        return NextResponse.json({ message: 'Not Found' }, { status: 404 });
+      }
+      throw new Error('Failed to fetch SpaceX landing pad data.');
     }
-    const data: Core[] = await response.json();
+    const data: LandingPad = await response.json();
     return NextResponse.json(data);
   } catch (error: unknown) {
     if (error instanceof Error) {
