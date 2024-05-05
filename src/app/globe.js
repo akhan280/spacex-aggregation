@@ -1,47 +1,45 @@
-import React, { useEffect, useRef } from 'react';
-import Head from 'next/head';
-import Globe from 'globe.gl';
+import React, { useEffect, useRef } from "react";
+import Globe from "globe.gl";
+import { useLaunchpadStore } from "@/stores/useLaunchpadStore";
 
 export default function CustomGlobe() {
   const globeContainerRef = useRef(null);
+  const { launchpads, setSelectedLaunch } = useLaunchpadStore();
 
   useEffect(() => {
-    // Initialize the globe only if the container exists
     if (globeContainerRef.current) {
-      const N = 10;
-      const gData = [...Array(N).keys()].map(() => ({
-        lat: (Math.random() - 0.5) * 180,
-        lng: (Math.random() - 0.5) * 360,
-        maxR: Math.random() * 20 + 3,
-        propagationSpeed: (Math.random() - 0.5) * 20 + 1,
-        repeatPeriod: Math.random() * 2000 + 200
-      }));
-
-      const colorInterpolator = t => `rgba(255,100,50,${Math.sqrt(1-t)})`;
-
-      const myGlobe = Globe()
-        .globeImageUrl('//unpkg.com/three-globe/example/img/earth-night.jpg')
-        .width(1000)
-        .backgroundColor("#000000")
-        .ringsData(gData)
-        .ringColor(() => colorInterpolator)
-        .ringMaxRadius('maxR')
-        .ringPropagationSpeed('propagationSpeed')
-        .ringRepeatPeriod('repeatPeriod');
-
-      myGlobe(globeContainerRef.current);
-
-      // Cleanup function
+      console.log("This is launchpads");
+      console.log(launchpads);
+      if (launchpads) {
+        Globe()
+          .globeImageUrl("//unpkg.com/three-globe/example/img/earth-night.jpg")
+          .backgroundImageUrl("//unpkg.com/three-globe/example/img/night-sky.png")
+          .backgroundColor("#000000")
+          .width(1000)
+          .labelsData(launchpads)
+          .labelLat(d => d.latitude)
+          .labelLng(d => d.longitude)
+          .labelText(() => "")
+          .labelSize(d => d.status === "active" ? 4.5 : 6)
+          .labelDotRadius(d => d.status === "active" ? 0.5 : 2)
+          .labelColor(d => d.status === "active" ? "green" : "red")
+          .labelAltitude(0)
+          .onLabelClick(d => {
+            console.log("Callback triggered with");
+            console.log(d);
+            setSelectedLaunch(d);
+          })
+          (globeContainerRef.current);
+      }
       return () => {
-        // Properly remove the globe from the DOM
         if (globeContainerRef.current) {
-          globeContainerRef.current.innerHTML = '';
+          globeContainerRef.current.innerHTML = "";
         }
       };
     }
-  }, []);
+  }, [launchpads, setSelectedLaunch]);
 
   return (
-    <div ref={globeContainerRef} style={{ width: '100%', height: '100%' }} />
+    <div ref={globeContainerRef} style={{ width: "100%", height: "100%", margin: 0 }} />
   );
 }
