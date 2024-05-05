@@ -5,8 +5,8 @@ import CustomGlobe from "./globe.js";
 import { usePads } from "@/hooks/usePad";
 import { usePadStore } from "@/stores/usePadStore";
 import { useLaunch } from "@/hooks/useLaunch";
-import {useState} from 'react'
-import LaunchModal from './launchModal.js'
+import { useState } from "react";
+import LaunchModal from "./launchModal.js";
 
 export default function Home() {
   const { loading } = usePads();
@@ -38,7 +38,7 @@ export default function Home() {
       </div>
       <div className="w-1/2 h-full z-50 flex items-center justify-center">
         {selectedPad ? (
-          <div className="text-lg text-center p-8 border-2 border-dotted border-white text-zinc-100">
+          <div className="text-lg text-center p-8 border-2 border-dotted border-white text-zinc-100 overflow-y-auto max-h-full ">
             <div>
               {selectedPad.isLaunch ? (
                 <div>
@@ -96,16 +96,8 @@ export default function Home() {
                   <p>Status: {selectedPad.status}</p>
                   <p>Details: {selectedPad.details}</p>
 
-                  {/* {selectedPad.launches && (
-                    <div>
-                      <p>Launches:</p>
-                      <ul>
-                        {selectedPad.launches.map((launch, index) => (
-                          <li key={index}>{launch}</li>
-                        ))}
-                      </ul>
-                    </div>
-                  )} */}
+                  <p>Upcoming Launches: {selectedPad.status}</p>
+
                   {selectedPad.images.large &&
                     Array.isArray(selectedPad.images.large) && (
                       <div>
@@ -121,6 +113,22 @@ export default function Home() {
                         </div>
                       </div>
                     )}
+                  {selectedPad.launches && (
+                    <div className="max-h-40 overflow-y-auto">
+                      <p>Launches:</p>
+                      <ul>
+                        {selectedPad.launches.map((launch, index) => (
+                          <li
+                            key={index}
+                            className="cursor-pointer underline"
+                            onClick={() => handleLaunchClick(launch)}
+                          >
+                            {launch.name}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
                 </div>
               )}
             </div>
