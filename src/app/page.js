@@ -6,7 +6,7 @@ import { usePads } from "@/hooks/usePad";
 import { usePadStore } from "@/stores/usePadStore";
 import { useLaunch } from "@/hooks/useLaunch";
 import { useState } from "react";
-import LaunchModal from "./launchModal.js";
+import LaunchModal from "./LaunchModal.js";
 
 export default function Home() {
   const { loading } = usePads();
@@ -135,13 +135,14 @@ export default function Home() {
           </div>
         ) : (
           <div className="text-lg text-center p-8 border-2 border-dotted border-white text-zinc-100">
-            <h1>Welcome to SpaceX Visualized</h1>
-            <p>
-              Whether you're making content, or trying to show users future
-              rocket launches.
-            </p>
-            <p>We've created the place for all visualization.</p>
-          </div>
+          <h1>Welcome to SpaceX Visualized</h1>
+          <p>
+            Whether you&apos;re making content, or trying to show users future
+            rocket launches.
+          </p>
+          <p>We&apos;ve created the place for all visualization.</p>
+        </div>
+        
         )}
       </div>
       <LaunchModal launch={selectedLaunch} onClose={handleModalClose} />
